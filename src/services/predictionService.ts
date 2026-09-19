@@ -1,6 +1,14 @@
 import { PredictionInput, PredictionResult, FeatureImpact, DatasetInsights } from "@/types/property";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+function getApiBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+    return "/api/backend";
+  }
+  return "http://localhost:8000";
+}
 
 export async function predictProperty(
   input: PredictionInput
@@ -35,7 +43,7 @@ export async function predictProperty(
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 4000); // 4 second timeout
 
-    const response = await fetch(`${API_BASE_URL}/predict`, {
+    const response = await fetch(`${getApiBaseUrl()}/predict`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -244,7 +252,7 @@ function computeDeterministicValuation(
 
 export async function fetchMarketInsights() {
   try {
-    const res = await fetch(`${API_BASE_URL}/insights`);
+    const res = await fetch(`${getApiBaseUrl()}/insights`);
     if (res.ok) {
       const data = await res.json();
       return data.insights || data;
