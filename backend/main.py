@@ -202,3 +202,18 @@ def market_insights():
         "dataset_name": "Kaggle Housing Prices Dataset",
         "insights": insights,
     }
+
+
+@app.get("/analytics")
+def ml_analytics():
+    """
+    Returns authentic, comprehensive Machine Learning analytics for HMX valuation platform:
+    model architecture, performance benchmarks, feature importance, residual diagnostics,
+    correlations, and dataset drift monitoring boundaries.
+    """
+    if not engine.is_loaded:
+        # Reload attempt
+        engine.load_model()
+    
+    analytics_payload = engine.get_analytics_summary()
+    return analytics_payload

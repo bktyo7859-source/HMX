@@ -12,11 +12,12 @@ print("=" * 60)
 
 # 1. Test Next.js Front-End Routes
 print("\n--- 1. Testing Next.js Frontend Routes ---")
-frontend_routes = ["/", "/properties", "/predict", "/insights", "/about"]
+frontend_routes = ["/", "/properties", "/predict", "/insights", "/about", "/ml-dashboard", "/analytics"]
+
 for route in frontend_routes:
     try:
         url = f"http://localhost:3000{route}"
-        res = urllib.request.urlopen(url)
+        res = urllib.request.urlopen(url, timeout=2)
         content = res.read()
         print(f"  [OK] Route {route:15} : Status {res.status} OK ({len(content):,} bytes rendered)")
     except Exception as e:
@@ -25,7 +26,7 @@ for route in frontend_routes:
 # 2. Test FastAPI Backend Endpoints
 print("\n--- 2. Testing FastAPI Backend Endpoints ---")
 try:
-    health_res = urllib.request.urlopen("http://127.0.0.1:8000/health")
+    health_res = urllib.request.urlopen("http://127.0.0.1:8000/health", timeout=2)
     health_data = json.loads(health_res.read().decode("utf-8"))
     print(f"  [OK] /health endpoint  : Status {health_res.status} OK")
     print(f"       - Model Loaded    : {health_data.get('model_loaded')}")
@@ -62,7 +63,7 @@ try:
         data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json"},
     )
-    pred_res = urllib.request.urlopen(req)
+    pred_res = urllib.request.urlopen(req, timeout=2)
     pred_data = json.loads(pred_res.read().decode("utf-8"))
     print(f"  [OK] /predict endpoint : Status {pred_res.status} OK")
     print(f"       - Predicted Price : INR {pred_data['predicted_price']:,}")
@@ -80,7 +81,7 @@ except Exception as e:
 # 4. Test Market Insights Endpoint
 print("\n--- 4. Testing Market Insights Endpoint (/insights) ---")
 try:
-    ins_res = urllib.request.urlopen("http://127.0.0.1:8000/insights")
+    ins_res = urllib.request.urlopen("http://127.0.0.1:8000/insights", timeout=2)
     ins_data = json.loads(ins_res.read().decode("utf-8"))
     print(f"  [OK] /insights endpoint: Status {ins_res.status} OK")
     print(f"       - Dataset Verified: {ins_data.get('dataset_name')}")
@@ -91,6 +92,22 @@ try:
 except Exception as e:
     print(f"  [ERR] /insights failed: {e}")
 
+# 5. Test ML Analytics Endpoint
+print("\n--- 5. Testing ML Analytics Endpoint (/analytics) ---")
+try:
+    an_res = urllib.request.urlopen("http://127.0.0.1:8000/analytics", timeout=2)
+    an_data = json.loads(an_res.read().decode("utf-8"))
+    print(f"  [OK] /analytics endpoint: Status {an_res.status} OK")
+    print(f"       - Active Model     : {an_data.get('kpis', {}).get('active_model_name')}")
+    print(f"       - Test R2 Score    : {an_data.get('kpis', {}).get('test_r2')}")
+    print(f"       - Test MAE         : INR {an_data.get('kpis', {}).get('test_mae'):,}")
+    print(f"       - Test MAPE        : {an_data.get('kpis', {}).get('test_mape')}%")
+    print(f"       - Model Benchmarks : {len(an_data.get('model_comparison', []))} algorithms compared")
+    print(f"       - Feature Drivers  : {len(an_data.get('feature_importance', {}).get('sorted', []))} features evaluated")
+except Exception as e:
+    print(f"  [ERR] /analytics failed: {e}")
+
 print("\n" + "=" * 60)
 print("ALL SYSTEM INTEGRATION CHECKS COMPLETED!")
 print("=" * 60)
+

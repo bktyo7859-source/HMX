@@ -70,3 +70,18 @@ def test_insights_endpoint():
     assert "by_bedrooms" in data["insights"]
     assert "summary" in data["insights"]
     assert data["insights"]["summary"]["total_properties"] == 545
+
+
+def test_analytics_endpoint():
+    response = client.get("/analytics")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] in ["online", "fallback"]
+    assert "kpis" in data
+    assert "model_comparison" in data
+    assert len(data["model_comparison"]) >= 4
+    assert "feature_importance" in data
+    assert "correlations" in data
+    assert "residual_analysis" in data
+    assert data["kpis"]["dataset_size"] == 545
+    assert data["kpis"]["num_features"] == 12

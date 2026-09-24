@@ -73,7 +73,17 @@ export default function TrustStats() {
             </div>
           ))}
         </div>
+
+        <div className="text-center pt-4">
+          <a
+            href="/ml-dashboard"
+            className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-emerald-800 bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-full hover:bg-emerald-100 transition-colors"
+          >
+            <span>Explore Full ML Analytics & Observability Dashboard →</span>
+          </a>
+        </div>
       </div>
     </section>
+
   );
 }

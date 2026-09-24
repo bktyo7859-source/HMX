@@ -81,6 +81,15 @@ export default function Footer() {
                   About
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/ml-dashboard"
+                  className="hover:text-[#111111] transition-colors inline-flex items-center gap-1 text-[#111111] font-medium"
+                >
+                  ML Analytics
+                  <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600" />
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -95,12 +104,18 @@ export default function Footer() {
             <p className="text-xs sm:text-sm text-[#6B6B6B] font-light leading-relaxed">
               Trained on authentic multi-dimensional housing records using Gradient Boosting regression. All estimates provide 80% model-based prediction intervals and transparent feature importances.
             </p>
-            <div className="pt-2">
+            <div className="pt-2 flex flex-wrap items-center gap-4">
               <Link
                 href="/predict"
                 className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#111111] border-b border-[#111111] pb-1 hover:text-[#C5A880] hover:border-[#C5A880] transition-all"
               >
-                Launch Valuation Studio →
+                Valuation Studio →
+              </Link>
+              <Link
+                href="/ml-dashboard"
+                className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-emerald-800 border-b border-emerald-800 pb-1 hover:text-emerald-600 transition-all"
+              >
+                ML Dashboard →
               </Link>
             </div>
           </div>
