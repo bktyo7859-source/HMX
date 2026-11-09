@@ -14,6 +14,11 @@ try:
 except ImportError:
     from backend.model import HMXValuationEngine
 
+try:
+    from home_studio_router import router as home_studio_router
+except ImportError:
+    from backend.home_studio_router import router as home_studio_router
+
 app = FastAPI(
     title="HMX AI Property Valuation API",
     description="High-precision Gradient Boosting valuation engine trained on Kaggle Housing.csv dataset.",
@@ -21,13 +26,28 @@ app = FastAPI(
 )
 
 # Enable CORS for local development and production frontends
+_cors_origins_env = os.getenv("HMX_CORS_ORIGINS", "").strip()
+_allowed_origins = (
+    [o.strip() for o in _cors_origins_env.split(",") if o.strip()]
+    if _cors_origins_env
+    else [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://hmx-jtyj-gse8d18e2-syndicate10.vercel.app",
+    ]
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_allowed_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept"],
 )
+
+# Mount HMX Home Studio Persistent Database & Authentication Router (Phase 9)
+app.include_router(home_studio_router)
 
 # Instantiate engine
 engine = HMXValuationEngine()

@@ -58,6 +58,15 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/home-studio"
+                  className="hover:text-[#111111] transition-colors inline-flex items-center gap-1 text-[#111111] font-medium"
+                >
+                  Home Studio
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#C5A880]" />
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/predict"
                   className="hover:text-[#111111] transition-colors inline-flex items-center gap-1 text-[#111111] font-medium"
                 >

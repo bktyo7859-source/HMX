@@ -30,6 +30,7 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Properties", href: "/properties" },
+    { name: "Home Studio", href: "/home-studio" },
     { name: "Predict", href: "/predict" },
     { name: "Insights", href: "/insights" },
     { name: "About", href: "/about" },
@@ -73,7 +74,10 @@ export default function Navbar() {
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center space-x-8 lg:space-x-10">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href || (link.href === "/ml-dashboard" && pathname === "/analytics");
+            const isActive =
+              pathname === link.href ||
+              (link.href === "/ml-dashboard" && pathname === "/analytics") ||
+              (link.href === "/home-studio" && pathname?.startsWith("/home-studio"));
             return (
               <Link
                 key={link.name}
@@ -133,7 +137,10 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-b border-[#EAEAEA] px-6 py-6 space-y-4 shadow-xl animate-fadeIn">
           <nav className="flex flex-col space-y-3">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href || (link.href === "/ml-dashboard" && pathname === "/analytics");
+              const isActive =
+                pathname === link.href ||
+                (link.href === "/ml-dashboard" && pathname === "/analytics") ||
+                (link.href === "/home-studio" && pathname?.startsWith("/home-studio"));
               return (
                 <Link
                   key={link.name}

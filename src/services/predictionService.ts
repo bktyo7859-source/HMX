@@ -1,4 +1,4 @@
-import { PredictionInput, PredictionResult, FeatureImpact, DatasetInsights } from "@/types/property";
+import { PredictionInput, PredictionResult, FeatureImpact, DatasetInsights } from "../types/property";
 
 function getApiBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_API_URL) {
